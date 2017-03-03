@@ -2,11 +2,6 @@ int cellsize = 10;
 int rowcell;
 int columncell;
 
-/*
-int[][] current_cellstate = new int[xcell][ycell];
-int[][] next_cellstate = new int[xcell][ycell];
-int[][] Inital_cellstate = new int [xcell][ycell];
-*/
 Table current_cellstate;
 Table next_cellstate;
 Table inital_cellstate;
@@ -16,13 +11,13 @@ void setup(){
   frameRate(4);
   size(500, 500);
   background(255);
-  
+
   //cellstate Initialize
   if((inital_cellstate = loadTable("data/inital_state.csv", "csv")) == null){
     println("error:cant load table");
     exit();
   }
-  println((rowcell = inital_cellstate.getRowCount()) + " total rows in table"); 
+  println((rowcell = inital_cellstate.getRowCount()) + " total rows in table");
   println((columncell = inital_cellstate.getColumnCount()) + " total columns in table");
   current_cellstate = inital_cellstate;
   if((default_cellstate = loadTable("data/default.csv", "csv")) == null){
@@ -48,7 +43,7 @@ void draw(){
   //mainloop
   for(int row = 0; row < rowcell; row++){
     for(int column = 0; column < columncell; column++){
-      
+
       //cell draw
       if(current_cellstate.getInt(row, column) == 1){
         //brack
@@ -58,7 +53,7 @@ void draw(){
         fill(255);
       }
       quad(column*cellsize, row*cellsize, (column+1)*cellsize, row*cellsize, (column+1)*cellsize, (row+1)*cellsize, column*cellsize, (row+1)*cellsize);
-      
+
       //get neighborcell state
       int neighbor_state = 0;
       if(row != 0           && column != 0              && current_cellstate.getInt(row - 1, column - 1) != 0) neighbor_state++;
@@ -69,21 +64,21 @@ void draw(){
       if(row != 0           && column != columncell - 1 && current_cellstate.getInt(row - 1, column + 1) != 0) neighbor_state++;
       if(                      column != columncell - 1 && current_cellstate.getInt(row    , column + 1) != 0) neighbor_state++;
       if(row != rowcell - 1 && column != columncell - 1 && current_cellstate.getInt(row + 1, column + 1) != 0) neighbor_state++;
-      
+
       //decision nextstate
       if(current_cellstate.getInt(row, column) == 0){
         switch(neighbor_state){
-          case 3  : 
+          case 3  :
                    next_cellstate.setInt(row, column, 1);
                    break;
-          default : 
+          default :
                    break;
-        
+
         }
       }else if(current_cellstate.getInt(row, column) == 1){
         switch(neighbor_state){
           case 2  :
-          case 3  : 
+          case 3  :
                    next_cellstate.setInt(row, column, 1);
                    break;
           default :
@@ -93,6 +88,6 @@ void draw(){
       }
     }
   }
-  
+
   current_cellstate = next_cellstate;
 }
