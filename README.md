@@ -1,6 +1,6 @@
 # processingn_life_game
 
-## ./kife_game.pde
+## ./life_game.pde
 * 本体
  - Processing 3.3
 
